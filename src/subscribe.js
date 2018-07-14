@@ -2,7 +2,7 @@ import { SVELTE_OBSERVABLE } from './utils';
 
 export default function subscribe({ changed, current }) {
   // Load subscriptions from component
-  // (if none found, assume first run and attach destory listener to unsubscribe)
+  // (if none found, assume first run and attach destroy listener to unsubscribe)
   let subscriptions = this[SVELTE_OBSERVABLE];
   if (!subscriptions) {
     subscriptions = this[SVELTE_OBSERVABLE] = {};
@@ -29,7 +29,7 @@ export default function subscribe({ changed, current }) {
 function createSubscription(component, key, observer) {
   // Subscribe to changes
   // - First change, resolve initial deferred value
-  // - Subsequent changes, first set on component
+  // - Subsequent changes, set on component
   const observable = observer[SVELTE_OBSERVABLE];
   const subscription = { value: observer, unsubscribe: null };
   let initial = false;
