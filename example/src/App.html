@@ -1,0 +1,48 @@
+<h1>svelte-observable</h1>
+
+<h2>From Data</h2>
+<div>
+  {#await values}
+    Loading...
+  {:then value}
+    Received: {value}
+  {:catch error}
+    Error: {error}
+  {/await}
+</div>
+
+<h2>From Computed</h2>
+
+<input type="text" bind:value=query />
+
+<div>
+  {#await results}
+    Loading...
+  {:then result}
+    Result: {result}
+  {:catch error}
+    <span style="color: red;">Error: {error.message}</span>
+  {/await}
+</div>
+
+<script>
+  import { observe, subscribe } from '../../';
+  import { list, search } from './api';
+
+  export default {
+    data() {
+      return {
+        values: observe(list()),
+        query: ''
+      };
+    },
+
+    computed: {
+      results: ({ query }) => {
+        return observe(search(query));
+      }
+    },
+
+    onstate: subscribe
+  }
+</script>

@@ -1,0 +1,6 @@
+node_modules
+dist
+example/public/bundle.*
+
+.vscode
+.DS_Store
