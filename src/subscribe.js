@@ -40,7 +40,10 @@ function createSubscription(component, key, observer) {
       observer.resolve(value);
       initial = false;
     } else {
+      // Continue exposing underlying observable on set values
+      value[SVELTE_OBSERVABLE] = observable;
       subscription.value = value;
+
       component.set({ [key]: value });
     }
   };
