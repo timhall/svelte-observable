@@ -1,4 +1,9 @@
-import { isObservable, deferred, SVELTE_OBSERVABLE } from './utils';
+import {
+  isObservable,
+  deferred,
+  nonenumerable,
+  SVELTE_OBSERVABLE
+} from './utils';
 
 export default function observe(value) {
   if (!isObservable(value)) return value;
@@ -8,7 +13,7 @@ export default function observe(value) {
   //
   // (wait until subscribe to kick off observable)
   const wrapped = deferred();
-  wrapped[SVELTE_OBSERVABLE] = value;
+  nonenumerable(wrapped, SVELTE_OBSERVABLE, value);
 
   return wrapped;
 }

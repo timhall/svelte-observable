@@ -1,4 +1,4 @@
-import { SVELTE_OBSERVABLE } from './utils';
+import { SVELTE_OBSERVABLE, nonenumerable } from './utils';
 import unsubscribe from './unsubscribe';
 
 export default function subscribe({ changed, current, previous }) {
@@ -6,7 +6,9 @@ export default function subscribe({ changed, current, previous }) {
   // (if none found, assume first run and attach destroy listener to unsubscribe)
   let subscriptions = this[SVELTE_OBSERVABLE];
   if (!subscriptions) {
-    subscriptions = this[SVELTE_OBSERVABLE] = {};
+    nonenumerable(this, SVELTE_OBSERVABLE, {});
+    subscriptions = this[SVELTE_OBSERVABLE];
+
     this.on('destroy', () => unsubscribe(this));
   }
 
@@ -46,7 +48,7 @@ function createSubscription(component, key, observer) {
       observer.resolve(value);
     } else {
       // Continue exposing underlying observable on set values
-      value[SVELTE_OBSERVABLE] = observable;
+      nonenumerable(value, SVELTE_OBSERVABLE, observable);
       component.set({ [key]: value });
     }
   };

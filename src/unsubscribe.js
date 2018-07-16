@@ -1,4 +1,4 @@
-import { SVELTE_OBSERVABLE } from './utils';
+import { SVELTE_OBSERVABLE, nonenumerable } from './utils';
 
 export default function unsubscribe(component) {
   component = component || this;
@@ -10,5 +10,5 @@ export default function unsubscribe(component) {
     subscriptions[key].unsubscribe();
   }
 
-  component[SVELTE_OBSERVABLE] = null;
+  nonenumerable(component, SVELTE_OBSERVABLE, null);
 }

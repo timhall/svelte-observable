@@ -27,3 +27,10 @@ export function deferred() {
 
   return later;
 }
+
+export function nonenumerable(target, name, value) {
+  Object.defineProperty(target, name, {
+    enumerable: false,
+    value
+  });
+}
