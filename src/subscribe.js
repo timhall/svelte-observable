@@ -38,12 +38,12 @@ function createSubscription(component, key, observer) {
   // - First change, resolve initial deferred value
   // - Subsequent changes, set on component
   const observable = observer[SVELTE_OBSERVABLE];
-  let initial = true;
+  let resolved = false;
 
   const replace = value => {
-    if (initial) {
+    if (!resolved && observer.resolve) {
+      resolved = true;
       observer.resolve(value);
-      initial = false;
     } else {
       // Continue exposing underlying observable on set values
       value[SVELTE_OBSERVABLE] = observable;
