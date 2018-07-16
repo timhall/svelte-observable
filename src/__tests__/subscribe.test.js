@@ -17,7 +17,7 @@ it('should subscribe to Observable', () => {
   const component = createComponent();
   const { observer, subscription } = createObserver();
 
-  subscribe.call(component, { changed: { a: 1 }, current: { a: observer } });
+  subscribe.call(component, { changed, current: { a: observer } });
 
   expect(observer[SVELTE_OBSERVABLE].subscribe).toHaveBeenCalled();
   expect(component[SVELTE_OBSERVABLE].a).toBe(subscription);
