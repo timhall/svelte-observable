@@ -31,6 +31,8 @@ export function deferred() {
 export function nonenumerable(target, name, value) {
   Object.defineProperty(target, name, {
     enumerable: false,
+    configurable: true,
+    writable: true,
     value
   });
 }
