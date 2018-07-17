@@ -7,7 +7,7 @@ export default {
     {
       file: 'dist/svelte-observable.umd.js',
       format: 'umd',
-      name: 'SvelteObservable',
+      name: 'svelteObservable',
       sourcemap: true
     }
   ],
