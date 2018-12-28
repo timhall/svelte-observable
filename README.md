@@ -1,9 +1,9 @@
 # svelte-observable
 
-Use observables in svelte components with ease. svelte-observable looks for observables in `data` and `computed` and handles subscriptions so that all you have to do is `{#await ...}` in your templates.
+Use observables in svelte components with ease. svelte-observable wraps observables as svelte's reactive stores so that all you have to do is `{#await ...}` in your templates.
 
 ```html
-{#await values}
+{#await $values}
   Loading until first value
 {:then value}
   Will be re-rendered as values come in
@@ -11,81 +11,45 @@ Use observables in svelte components with ease. svelte-observable looks for obse
   Errors are handled too
 {/await}
 
-<input type="text" bind:value=query />
-
-{#await results}
-  Loading...
-{:then result}
-  {result}
-{:catch error}
-  Error: {error}
-{/await}
-
 <script>
-  import { observe, subscribe } from 'svelte-observable'; 
-  import { list, search } from './api';
+  import { observe } from 'svelte-observable'; 
+  import { list } from './api';
 
-  export default {
-    data() {
-      return {
-        values: observe(list()),
-        //      ^ observe lets svelte-observable know to subscribe to this value
-        query: ''
-      };
-    },
-    computed: {
-      results: ({ query }) => observe(search(query))
-    },
-
-    onstate: subscribe
-    //       ^ subscribe to any new observables on state change
-  }
+  const values = observe(list());
 </script>
 ```
 
 ## observe
 
-Mark an observable to be watched and create an initial deferred value for compatibility with `{#await ...}`.
-`subscribe` will unsubscribe any previous observables for a given key, so it is safe to return `observe` in computed values.
+Wrap an observable as a reactive store with an initial deferred value for compatibility with `{#await ...}`.
+Wrapped observables return a chain of promises in one of three promise states:
 
-```js
+- pending - No value or error has been received yet
+- fulfilled - Received a value
+- rejected - Received an error
+
+```html
 <script>
-  import { observe } from 'svelte-observable';
-  import { list, search } from './api';
+import { observe } from 'svelte-observable';
 
-  export default {
-    data() {
-      return {
-        values: observe(list()),
-        query: ''
-      };
-    },
+const results = query({});
+//    ^ Observable<Result>
 
-    computed: {
-      results: ({ query }) => observe(search(query))
-    }
-  }
+const results_store = observe(results);
+//    ^ Readable<Promise<Result>>
+
+function query() {
+  return new Observable(observer => {
+    // ...
+  })
+}
 </script>
-```
 
-## subscribe
-
-Subscribe to any new observables on state change. Handles unsubscribe when an observable is replaced or the component is destroyed.
-
-```js
-<script>
-  import { subscribe } from 'svelte-observable';
-
-  export default {
-    onstate: subscribe
-
-    // or
-
-    onstate({ changed, current }) {
-      // ...
-
-      subscribe.call(this, { changed, current });
-    }
-  }
-</script>
+{#await $results_store}
+  pending - No value or error has been received yet
+{:then result}
+  fulfilled - Received a value
+{:catch error}
+  rejected - Received an error
+{/await}
 ```
