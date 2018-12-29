@@ -11,8 +11,8 @@ export default function observe(observable) {
       next(value) {
         set(fulfilled(value));
       },
-      error(error) {
-        set(rejected(error));
+      error(err) {
+        set(rejected(err));
       }
     });
 

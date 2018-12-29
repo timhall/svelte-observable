@@ -4,8 +4,8 @@
   "author": "Tim Hall <tim.hall.engr@gmail.com>",
   "license": "MIT",
   "repository": "https://github.com/timhall/svelte-observable.git",
-  "module": "src/index.js",
-  "main": "dist/svelte-observable.umd.js",
+  "module": "dist/svelte-observable.es.js",
+  "main": "dist/svelte-observable.cjs.js",
   "scripts": {
     "build": "rollup -c",
     "prepublishOnly": "npm run build",
@@ -20,7 +20,7 @@
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "jest": "^23.6.0",
-    "rollup": "^0.57.1",
+    "rollup": "^1.0.0",
     "rollup-plugin-buble": "^0.19.6",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-filesize": "^2.0.0",
@@ -34,7 +34,6 @@
     "rxjs"
   ],
   "files": [
-    "src",
     "dist"
   ],
   "jest": {

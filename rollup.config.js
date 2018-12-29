@@ -5,9 +5,13 @@ export default {
   input: 'src/index.js',
   output: [
     {
-      file: 'dist/svelte-observable.umd.js',
-      format: 'umd',
-      name: 'svelteObservable',
+      file: 'dist/svelte-observable.es.js',
+      format: 'es',
+      sourcemap: true
+    },
+    {
+      file: 'dist/svelte-observable.cjs.js',
+      format: 'cjs',
       sourcemap: true
     }
   ],

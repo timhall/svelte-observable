@@ -2,8 +2,8 @@ import { readable } from 'svelte/store';
 import { isObservable, pending, fulfilled, rejected } from './utils';
 import observe from './observe';
 
-export default function flat(store) {
-  const is_observable = isObservable(store);
+export default function flat(subscribable) {
+  const is_observable = isObservable(subscribable);
 
   return readable(
     set => {
@@ -18,7 +18,7 @@ export default function flat(store) {
         if (inner_unsubscribe) inner_unsubscribe();
         if (isObservable(value)) value = observe(value);
 
-        if (isStore(value)) {
+        if (isSubscribable(value)) {
           inner_unsubscribe = value.subscribe(inner => fulfill(inner));
         } else {
           fulfill(value);
@@ -29,10 +29,10 @@ export default function flat(store) {
       }
 
       if (is_observable) {
-        const subscription = store.subscribe({ next, error });
+        const subscription = subscribable.subscribe({ next, error });
         outer_unsubscribe = () => subscription.unsubscribe();
       } else {
-        outer_unsubscribe = store.subscribe(next);
+        outer_unsubscribe = subscribable.subscribe(next);
       }
 
       return () => {
@@ -44,6 +44,6 @@ export default function flat(store) {
   );
 }
 
-function isStore(value) {
+function isSubscribable(value) {
   return value && typeof value.subscribe === 'function';
 }
