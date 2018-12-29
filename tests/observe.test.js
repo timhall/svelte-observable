@@ -1,33 +1,29 @@
+import test from 'ava';
 import Observable from 'zen-observable';
-import { load, check } from '../__helpers__';
+import { load, check } from './helpers';
 import { observe } from '../';
 
-it('should have initial pending value', async () => {
+test('should have initial pending value', async t => {
   const observable = Observable.of(1, 2, 3);
   const store = observe(observable);
 
   const values = await load(store);
   const states = await check(values);
 
-  expect(states[0].pending).toBe(true);
+  t.true(states[0].pending);
 });
 
-it('should have fulfilled values', async () => {
+test('should have fulfilled values', async t => {
   const observable = Observable.of(1, 2, 3);
   const store = observe(observable);
 
   const values = await load(store);
   const states = await check(values);
 
-  expect(states[1].fulfilled).toBe(true);
-  expect(states[1].value).toEqual(1);
-  expect(states[2].fulfilled).toBe(true);
-  expect(states[2].value).toEqual(2);
-  expect(states[3].fulfilled).toBe(true);
-  expect(states[3].value).toEqual(3);
+  t.snapshot(states);
 });
 
-it('should have rejected error values', async () => {
+test('should have rejected error values', async t => {
   const observable = new Observable(observer => {
     observer.error(new Error('Uh oh.'));
   });
@@ -36,14 +32,13 @@ it('should have rejected error values', async () => {
   const values = await load(store);
   const states = await check(values);
 
-  expect(states[1].rejected).toBe(true);
-  expect(states[1].error.message).toEqual('Uh oh.');
+  t.true(states[1].rejected);
+  t.is(states[1].error.message, 'Uh oh.');
 });
 
-it('should have readable passthrough if not Observable', async () => {
+test('should have readable passthrough if not Observable', async t => {
   const store = observe(4);
 
   const values = await load(store);
-
-  expect(values[0]).toEqual(4);
+  t.is(values[0], 4);
 });

@@ -1,4 +1,4 @@
-export async function load(store, wait) {
+async function load(store, wait) {
   const values = [];
   store.subscribe(value => {
     values.push(value);
@@ -8,7 +8,7 @@ export async function load(store, wait) {
   return values;
 }
 
-export function check(promise) {
+function check(promise) {
   if (Array.isArray(promise)) {
     return Promise.all(promise.map(check));
   }
@@ -23,7 +23,7 @@ export function check(promise) {
     });
 }
 
-export function tick(count = 0) {
+function tick(count = 0) {
   if (count === 0) {
     return new Promise(resolve => resolve());
   } else {
@@ -32,3 +32,5 @@ export function tick(count = 0) {
     }).then(() => (count > 1 ? tick(count - 1) : undefined));
   }
 }
+
+module.exports = { load, check, tick };

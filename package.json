@@ -10,16 +10,14 @@
     "build": "rollup -c",
     "prepublishOnly": "npm run build",
     "example": "cd example && rollup -c",
-    "test": "jest"
+    "pretest": "npm run build",
+    "test": "ava"
   },
   "dependencies": {
     "svelte": "^3.0.0-alpha9"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-jest": "^23.6.0",
-    "babel-preset-env": "^1.7.0",
-    "jest": "^23.6.0",
+    "ava": "^1.0.1",
     "rollup": "^1.0.0",
     "rollup-plugin-buble": "^0.19.6",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -35,8 +33,5 @@
   ],
   "files": [
     "dist"
-  ],
-  "jest": {
-    "testEnvironment": "node"
-  }
+  ]
 }

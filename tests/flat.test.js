@@ -1,6 +1,7 @@
+import test from 'ava';
 import Observable from 'zen-observable';
 import { readable } from 'svelte/store';
-import { load, check, tick } from '../__helpers__';
+import { load, check, tick } from './helpers';
 import { flat } from '../';
 
 const Store = {
@@ -16,12 +17,12 @@ const Store = {
   }
 };
 
-it('should flatten stores', async () => {
+test('should flatten stores', async t => {
   let store = Store.of(1, 2, 3);
   let flattened = flat(store);
   let values = await load(flattened, 3);
 
-  expect(values).toEqual([1, 2, 3]);
+  t.deepEqual(values, [1, 2, 3]);
 
   store = readable(async set => {
     set(Store.of(1, 2, 3));
@@ -33,20 +34,17 @@ it('should flatten stores', async () => {
   flattened = flat(store);
   values = await load(flattened, 5);
 
-  expect(values).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  t.deepEqual(values, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 });
 
-it('should flatten observables', async () => {
+test('should flatten observables', async t => {
   let observable = Observable.of(1, 2, 3);
   let flattened = flat(observable);
 
   let values = await load(flattened);
   let states = await check(values);
 
-  expect(states[0].pending).toBe(true);
-  expect(states[1].value).toEqual(1);
-  expect(states[2].value).toEqual(2);
-  expect(states[3].value).toEqual(3);
+  t.snapshot(states);
 
   observable = new Observable(async observer => {
     observer.next(Observable.of(1, 2, 3));
@@ -60,5 +58,5 @@ it('should flatten observables', async () => {
   values = await load(flattened, 5);
   states = await check(values);
 
-  expect(states).toMatchSnapshot();
+  t.snapshot(states);
 });
