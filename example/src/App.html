@@ -1,5 +1,6 @@
 <h1>svelte-observable</h1>
 
+<h2>observe</h2>
 <div>
   {#await $values}
     Loading...
@@ -10,9 +11,27 @@
   {/await}
 </div>
 
+<h2>flat</h2>
+<label for="search">Search</label>
+<input id="search" type="text" value="{$query}" on:input="{e => query.set(e.target.value)}" />
+
+<div>
+  {#await $results}
+    Loading...
+  {:then result}
+    Result: {result}
+  {:catch error}
+    <span style="color: red;">Error: {error.message}</span>
+  {/await}
+</div>
+
 <script>
-  import { observe } from '../../';
-  import { list } from './api';
+  import { observe, flat } from '../../';
+  import { writable, derive } from 'svelte/store';
+  import { list, search } from './api';
 
   const values = observe(list());
+
+  const query = writable('');
+  const results = flat(derive(query, $query => search($query)));
 </script>
