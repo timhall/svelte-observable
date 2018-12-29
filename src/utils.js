@@ -1,8 +1,3 @@
-export const SVELTE_OBSERVABLE =
-  typeof Symbol === 'function'
-    ? Symbol('svelte-observable')
-    : '@@svelte-observable';
-
 let OBSERVABLE;
 
 export function isObservable(value) {
@@ -15,24 +10,16 @@ export function isObservable(value) {
   return value && value[OBSERVABLE] && value[OBSERVABLE]() === value;
 }
 
-export function deferred() {
-  let resolve, reject;
-  const later = new Promise((_resolve, _reject) => {
-    resolve = _resolve;
-    reject = _reject;
-  });
-
-  later.resolve = resolve;
-  later.reject = reject;
-
-  return later;
+export function pending() {
+  return new Promise(noop);
 }
 
-export function nonenumerable(target, name, value) {
-  Object.defineProperty(target, name, {
-    enumerable: false,
-    configurable: true,
-    writable: true,
-    value
-  });
+export function fulfilled(value) {
+  return Promise.resolve(value);
 }
+
+export function rejected(error) {
+  return Promise.reject(error);
+}
+
+export function noop() {}

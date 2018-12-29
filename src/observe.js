@@ -1,19 +1,21 @@
-import {
-  isObservable,
-  deferred,
-  nonenumerable,
-  SVELTE_OBSERVABLE
-} from './utils';
+import { readable } from 'svelte/store';
+import { isObservable, pending, fulfilled, rejected, noop } from './utils';
 
-export default function observe(value) {
-  if (!isObservable(value)) return value;
+export default function observe(observable) {
+  if (!isObservable(observable)) {
+    return readable(noop, observable);
+  }
 
-  // Return a deferred Promise that will resolve to the initial observable value
-  // and subsequently be replaced with additional values
-  //
-  // (wait until subscribe to kick off observable)
-  const wrapped = deferred();
-  nonenumerable(wrapped, SVELTE_OBSERVABLE, value);
+  return readable(set => {
+    const subscription = observable.subscribe({
+      next(value) {
+        set(fulfilled(value));
+      },
+      error(error) {
+        set(rejected(error));
+      }
+    });
 
-  return wrapped;
+    return () => subscription.unsubscribe();
+  }, pending());
 }
