@@ -56,7 +56,7 @@ function query() {
 
 ## flat
 
-Flatten a store/observable of stores/observables, unsubscribing from the previous store/observable as new values come in.
+Flatten a store/observable of stores/observables, unsubscribing from the previous store/observable as new values come in. This method is similar to `switchMap` in RxJS.
 
 ```html
 <script>
@@ -67,8 +67,9 @@ import { query } from './api';
 const search = writable('');
 
 // query returns an Observable of results
-// -> need previous results to be unsubscribed on query change
-const results = flat(derive(search, $search => query($search)));
+// -> need to unsubscribe from previous results on search change
+const store_of_observables = derive(search, $search => query($search));
+const results = flat(store_of_observables);
 </script>
 
 <input value={$search} on:change={e => search.set(e.target.value)} />
