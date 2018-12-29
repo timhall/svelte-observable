@@ -1,4 +1,5 @@
 import Observable from 'zen-observable';
+import { load, check } from '../__helpers__';
 import { observe } from '../';
 
 it('should have initial pending value', async () => {
@@ -6,7 +7,7 @@ it('should have initial pending value', async () => {
   const store = observe(observable);
 
   const values = await load(store);
-  const states = await state(values);
+  const states = await check(values);
 
   expect(states[0].pending).toBe(true);
 });
@@ -16,7 +17,7 @@ it('should have fulfilled values', async () => {
   const store = observe(observable);
 
   const values = await load(store);
-  const states = await state(values);
+  const states = await check(values);
 
   expect(states[1].fulfilled).toBe(true);
   expect(states[1].value).toEqual(1);
@@ -33,7 +34,7 @@ it('should have rejected error values', async () => {
   const store = observe(observable);
 
   const values = await load(store);
-  const states = await state(values);
+  const states = await check(values);
 
   expect(states[1].rejected).toBe(true);
   expect(states[1].error.message).toEqual('Uh oh.');
@@ -46,34 +47,3 @@ it('should have readable passthrough if not Observable', async () => {
 
   expect(values[0]).toEqual(4);
 });
-
-async function load(store) {
-  const values = [];
-  store.subscribe(value => {
-    values.push(value);
-  });
-  await tick();
-
-  return values;
-}
-
-function state(promise) {
-  if (Array.isArray(promise)) {
-    return Promise.all(promise.map(state));
-  }
-
-  return Promise.race([promise, Promise.resolve('(pending)')])
-    .then(value => {
-      if (value === '(pending)') return { pending: true };
-      else return { fulfilled: true, value };
-    })
-    .catch(error => {
-      return { rejected: true, error };
-    });
-}
-
-function tick() {
-  return new Promise(resolve => {
-    process.nextTick(resolve);
-  });
-}

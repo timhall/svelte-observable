@@ -1,6 +1,6 @@
 # svelte-observable
 
-Use observables in svelte components with ease. svelte-observable wraps observables as svelte's reactive stores so that all you have to do is `{#await ...}` in your templates.
+Use observables in svelte components with ease. svelte-observable wraps Observables with svelte's reactive stores so that all you have to do is `{#await $...}` in your templates. This allows you to work with Observable libraries like RxJS and zen-observable with the convenience and built-in support of svelte's reactive stores.
 
 ```html
 {#await $values}
@@ -51,5 +51,33 @@ function query() {
   fulfilled - Received a value
 {:catch error}
   rejected - Received an error
+{/await}
+```
+
+## flat
+
+Flatten a store/observable of stores/observables, unsubscribing from the previous store/observable as new values come in.
+
+```html
+<script>
+import { writable, derive } from 'svelte/store';
+import { flat } from 'svelte-observable';
+import { query } from './api';
+
+const search = writable('');
+
+// query returns an Observable of results
+// -> need previous results to be unsubscribed on query change
+const results = flat(derive(search, $search => query($search)));
+</script>
+
+<input value={$search} on:change={e => search.set(e.target.value)} />
+
+{#await $results}
+  Loading...
+{:then results}
+  {results}
+{:catch error}
+  {error}
 {/await}
 ```
