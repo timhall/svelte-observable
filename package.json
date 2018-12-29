@@ -3,6 +3,7 @@
   "version": "0.4.0-alpha.1",
   "author": "Tim Hall <tim.hall.engr@gmail.com>",
   "license": "MIT",
+  "description": "Use observables in svelte components with ease",
   "repository": "https://github.com/timhall/svelte-observable.git",
   "module": "dist/svelte-observable.es.js",
   "main": "dist/svelte-observable.cjs.js",
@@ -14,7 +15,7 @@
     "pretest": "npm run build",
     "test": "ava"
   },
-  "dependencies": {
+  "peerDependencies": {
     "svelte": "^3.0.0-alpha9"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
     "rollup-plugin-filesize": "^2.0.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-svelte": "^4.5.0",
+    "svelte": "^3.0.0-alpha9",
     "zen-observable": "^0.8.11"
   },
   "keywords": [
