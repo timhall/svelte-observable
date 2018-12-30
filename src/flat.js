@@ -4,46 +4,47 @@ import observe from './observe';
 
 export default function flat(subscribable) {
   const is_observable = isObservable(subscribable);
+  const initial = is_observable ? pending() : undefined;
 
-  return readable(
-    set => {
-      let inner_unsubscribe;
-      let outer_unsubscribe;
+  return readable(set => {
+    let inner_unsubscribe;
+    let outer_unsubscribe;
 
-      const fulfill = is_observable
-        ? value => set(fulfilled(value))
-        : value => set(value);
+    const fulfill = is_observable
+      ? value => set(fulfilled(value))
+      : value => set(value);
 
-      function next(value) {
-        if (inner_unsubscribe) inner_unsubscribe();
-        if (isObservable(value)) value = observe(value);
-
-        if (isSubscribable(value)) {
-          inner_unsubscribe = value.subscribe(inner => fulfill(inner));
-        } else {
-          fulfill(value);
-        }
+    function next(value) {
+      if (inner_unsubscribe) {
+        inner_unsubscribe();
+        inner_unsubscribe = null;
       }
-      function error(err) {
-        set(rejected(err));
-      }
+      if (isObservable(value)) value = observe(value);
 
-      if (is_observable) {
-        const subscription = subscribable.subscribe({ next, error });
-        outer_unsubscribe = () => subscription.unsubscribe();
+      if (isStore(value)) {
+        inner_unsubscribe = value.subscribe(inner => fulfill(inner));
       } else {
-        outer_unsubscribe = subscribable.subscribe(next);
+        fulfill(value);
       }
+    }
+    function error(err) {
+      set(rejected(err));
+    }
 
-      return () => {
-        if (inner_unsubscribe) inner_unsubscribe();
-        outer_unsubscribe();
-      };
-    },
-    is_observable ? pending() : undefined
-  );
+    if (is_observable) {
+      const subscription = subscribable.subscribe({ next, error });
+      outer_unsubscribe = () => subscription.unsubscribe();
+    } else {
+      outer_unsubscribe = subscribable.subscribe(next);
+    }
+
+    return () => {
+      if (inner_unsubscribe) inner_unsubscribe();
+      outer_unsubscribe();
+    };
+  }, initial);
 }
 
-function isSubscribable(value) {
+function isStore(value) {
   return value && typeof value.subscribe === 'function';
 }
