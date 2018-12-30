@@ -69,7 +69,10 @@ const search = writable('');
 // query returns an Observable of results
 // -> need to unsubscribe from previous results on search change
 const store_of_observables = derive(search, $search => query($search));
+//    ^ Readable<Observable<Result>>
+
 const results = flat(store_of_observables);
+//    ^ Readable<Result>
 </script>
 
 <input value={$search} on:change={e => search.set(e.target.value)} />
