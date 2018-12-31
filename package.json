@@ -16,17 +16,17 @@
     "test": "ava"
   },
   "peerDependencies": {
-    "svelte": "^3.0.0-alpha9"
+    "svelte": "^3.0.0-alpha12"
   },
   "devDependencies": {
     "ava": "^1.0.1",
     "rollup": "^1.0.0",
     "rollup-plugin-buble": "^0.19.6",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-filesize": "^2.0.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-svelte": "^4.5.0",
-    "svelte": "^3.0.0-alpha9",
+    "rollup-plugin-filesize": "^5.0.1",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-svelte": "^5.0.0",
+    "svelte": "^3.0.0-alpha12",
     "zen-observable": "^0.8.11"
   },
   "keywords": [

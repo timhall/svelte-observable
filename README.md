@@ -30,19 +30,19 @@ Wrapped observables return a chain of promises in one of three promise states:
 
 ```html
 <script>
-import { observe } from 'svelte-observable';
+  import { observe } from 'svelte-observable';
 
-const results = query({});
-//    ^ Observable<Result>
+  const results = query({});
+  //    ^ Observable<Result>
 
-const results_store = observe(results);
-//    ^ Readable<Promise<Result>>
+  const results_store = observe(results);
+  //    ^ Readable<Promise<Result>>
 
-function query() {
-  return new Observable(observer => {
-    // ...
-  })
-}
+  function query() {
+    return new Observable(observer => {
+      // ...
+    })
+  }
 </script>
 
 {#await $results_store}
@@ -60,19 +60,19 @@ Flatten a store/observable of stores/observables, unsubscribing from the previou
 
 ```html
 <script>
-import { writable, derive } from 'svelte/store';
-import { flat } from 'svelte-observable';
-import { query } from './api';
+  import { writable, derive } from 'svelte/store';
+  import { flat } from 'svelte-observable';
+  import { query } from './api';
 
-const search = writable('');
+  const search = writable('');
 
-// query returns an Observable of results
-// -> need to unsubscribe from previous results on search change
-const store_of_observables = derive(search, $search => query($search));
-//    ^ Readable<Observable<Result>>
+  // query returns an Observable of results
+  // -> need to unsubscribe from previous results on search change
+  const store_of_observables = derive(search, $search => query($search));
+  //    ^ Readable<Observable<Result>>
 
-const results = flat(store_of_observables);
-//    ^ Readable<Result>
+  const results = flat(store_of_observables);
+  //    ^ Readable<Result>
 </script>
 
 <input value={$search} on:change={e => search.set(e.target.value)} />

@@ -3,6 +3,7 @@ import filesize from 'rollup-plugin-filesize';
 
 export default {
   input: 'src/index.js',
+  external: ['svelte/store'],
   output: [
     {
       file: 'dist/svelte-observable.es.js',
