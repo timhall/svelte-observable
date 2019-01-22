@@ -72,7 +72,7 @@ Flatten a store/observable of stores/observables, unsubscribing from the previou
   //    ^ Readable<Observable<Result>>
 
   const results = flat(store_of_observables);
-  //    ^ Readable<Result>
+  //    ^ Readable<Promise<Result>>
 </script>
 
 <input value={$search} on:change={e => search.set(e.target.value)} />
