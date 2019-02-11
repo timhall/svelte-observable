@@ -12,6 +12,9 @@ function check(promise) {
   if (Array.isArray(promise)) {
     return Promise.all(promise.map(check));
   }
+  if (typeof promise.then !== 'function') {
+    return promise;
+  }
 
   return Promise.race([promise, Promise.resolve('(pending)')])
     .then(value => {

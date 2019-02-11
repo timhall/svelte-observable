@@ -2,7 +2,7 @@ import { readable } from 'svelte/store';
 import { isObservable, deferred } from './utils';
 import observe from './observe';
 
-export default function flat(subscribable) {
+export default function flat(subscribable, initial) {
   const is_observable = isObservable(subscribable);
 
   return readable(set => {
@@ -10,7 +10,7 @@ export default function flat(subscribable) {
     let outer_unsubscribe;
 
     const { fulfill = value => set(value), reject } = is_observable
-      ? deferred(set)
+      ? deferred(set, initial)
       : {};
 
     function next(value) {

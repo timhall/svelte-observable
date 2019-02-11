@@ -10,29 +10,31 @@ export function isObservable(value) {
   return value && value[OBSERVABLE] && value[OBSERVABLE]() === value;
 }
 
-export function deferred(set) {
-  let initial = true;
+export function deferred(set, initial) {
+  let initialized = initial !== undefined;
   let resolve, reject;
 
-  // Set initial pending value
+  // Set initial value
   set(
-    new Promise((_resolve, _reject) => {
-      resolve = _resolve;
-      reject = _reject;
-    })
+    initialized
+      ? initial
+      : new Promise((_resolve, _reject) => {
+          resolve = _resolve;
+          reject = _reject;
+        })
   );
 
   return {
     fulfill(value) {
-      if (!initial) return set(Promise.resolve(value));
+      if (initialized) return set(Promise.resolve(value));
 
-      initial = false;
+      initialized = true;
       resolve(value);
     },
     reject(error) {
-      if (!initial) return set(Promise.reject(value));
+      if (initialized) return set(Promise.reject(value));
 
-      initial = false;
+      initialized = true;
       reject(error);
     }
   };

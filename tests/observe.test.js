@@ -31,3 +31,13 @@ it('should have readable passthrough if not Observable', async () => {
   const values = await load(store);
   expect(values[0]).toBe(4);
 });
+
+it('should have initial value', async () => {
+  const observable = Observable.of(1, 2, 3);
+  const store = observe(observable, 0);
+
+  const values = await load(store);
+  const states = await check(values);
+
+  expect(states).toMatchSnapshot();
+});

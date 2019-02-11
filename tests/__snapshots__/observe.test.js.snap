@@ -16,3 +16,21 @@ Array [
   },
 ]
 `;
+
+exports[`should have initial value 1`] = `
+Array [
+  0,
+  Object {
+    "fulfilled": true,
+    "value": 1,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 2,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 3,
+  },
+]
+`;

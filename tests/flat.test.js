@@ -59,3 +59,19 @@ it('should flatten observables', async () => {
 
   expect(states).toMatchSnapshot();
 });
+
+it('should have initial value', async () => {
+  const observable = new Observable(async observer => {
+    observer.next(Observable.of(1, 2, 3));
+    await tick();
+    observer.next(Observable.of(4, 5, 6));
+    await tick();
+    observer.next(Observable.of(7, 8, 9));
+  });
+  const flattened = flat(observable, 0);
+
+  const values = await load(flattened, 5);
+  const states = await check(values);
+
+  expect(states).toMatchSnapshot();
+});
