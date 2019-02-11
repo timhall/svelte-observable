@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should have fulfilled values 1`] = `
+Array [
+  Object {
+    "fulfilled": true,
+    "value": 1,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 2,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 3,
+  },
+]
+`;

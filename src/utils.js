@@ -10,16 +10,30 @@ export function isObservable(value) {
   return value && value[OBSERVABLE] && value[OBSERVABLE]() === value;
 }
 
-export function pending() {
-  return new Promise(noop);
-}
+export function deferred(set) {
+  let initial = true;
+  let resolve, reject;
 
-export function fulfilled(value) {
-  return Promise.resolve(value);
-}
+  // Set initial pending value
+  set(
+    new Promise((_resolve, _reject) => {
+      resolve = _resolve;
+      reject = _reject;
+    })
+  );
 
-export function rejected(error) {
-  return Promise.reject(error);
-}
+  return {
+    fulfill(value) {
+      if (!initial) return set(Promise.resolve(value));
 
-export function noop() {}
+      initial = false;
+      resolve(value);
+    },
+    reject(error) {
+      if (!initial) return set(Promise.reject(value));
+
+      initial = false;
+      reject(error);
+    }
+  };
+}

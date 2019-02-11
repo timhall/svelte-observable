@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should flatten observables 1`] = `
+Array [
+  Object {
+    "fulfilled": true,
+    "value": 1,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 2,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 3,
+  },
+]
+`;
+
+exports[`should flatten observables 2`] = `
+Array [
+  Object {
+    "fulfilled": true,
+    "value": 1,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 2,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 3,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 4,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 5,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 6,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 7,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 8,
+  },
+  Object {
+    "fulfilled": true,
+    "value": 9,
+  },
+]
+`;

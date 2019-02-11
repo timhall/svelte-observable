@@ -1,5 +1,7 @@
 import { readable } from 'svelte/store';
-import { isObservable, pending, fulfilled, rejected, noop } from './utils';
+import { isObservable, deferred } from './utils';
+
+const noop = () => {};
 
 export default function observe(observable) {
   if (!isObservable(observable)) {
@@ -7,15 +9,17 @@ export default function observe(observable) {
   }
 
   return readable(set => {
+    const { fulfill, reject } = deferred(set);
+
     const subscription = observable.subscribe({
       next(value) {
-        set(fulfilled(value));
+        fulfill(value);
       },
       error(err) {
-        set(rejected(err));
+        reject(err);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, pending());
+  });
 }
