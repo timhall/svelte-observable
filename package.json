@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@types/jest": "^24.0.6",
     "jest": "^24.1.0",
     "rollup": "^1.0.0",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -35,12 +36,14 @@
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-typescript": "^1.0.0",
     "svelte": "^3.0.0-beta.3",
+    "ts-jest": "^23.10.5",
     "tslib": "^1.9.3",
     "typescript": "^3.3.3",
     "zen-observable": "^0.8.11"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "preset": "ts-jest"
   },
   "files": [
     "dist"
