@@ -1,6 +1,8 @@
-let OBSERVABLE;
+import { Observable, Deferred, Fulfill, Reject } from './types';
 
-export function isObservable(value) {
+let OBSERVABLE: symbol | string | undefined;
+
+export function isObservable(value: any): value is Observable<any> {
   // Lazy-load Symbol to give polyfills a chance to run
   if (!OBSERVABLE) {
     OBSERVABLE =
@@ -10,15 +12,24 @@ export function isObservable(value) {
   return value && value[OBSERVABLE] && value[OBSERVABLE]() === value;
 }
 
-export function deferred(set, initial) {
+export interface Resolve<T> {
+  fulfill: Fulfill<T>;
+  reject: Reject;
+}
+
+export function deferred<T>(
+  set: (value: Deferred<T>) => void,
+  initial?: T
+): Resolve<T> {
   let initialized = initial !== undefined;
-  let resolve, reject;
+  let resolve: (value: T) => void | undefined;
+  let reject: (error: Error) => void | undefined;
 
   // Set initial value
   set(
     initialized
-      ? initial
-      : new Promise((_resolve, _reject) => {
+      ? initial!
+      : new Promise<T>((_resolve, _reject) => {
           resolve = _resolve;
           reject = _reject;
         })
@@ -32,7 +43,7 @@ export function deferred(set, initial) {
       resolve(value);
     },
     reject(error) {
-      if (initialized) return set(Promise.reject(value));
+      if (initialized) return set(Promise.reject(error));
 
       initialized = true;
       reject(error);
