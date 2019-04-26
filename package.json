@@ -22,24 +22,24 @@
     "check": "tsc --noEmit"
   },
   "peerDependencies": {
-    "svelte": "^3.0.0-beta.3"
+    "svelte": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
-    "@types/jest": "^24.0.6",
-    "jest": "^24.1.0",
-    "rollup": "^1.2.3",
-    "rollup-plugin-commonjs": "^9.2.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.4.3",
+    "@types/jest": "^24.0.11",
+    "jest": "^24.7.1",
+    "rollup": "^1.10.1",
+    "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-dts": "^0.12.0",
     "rollup-plugin-filesize": "^5.0.1",
-    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-svelte": "^5.0.3",
-    "rollup-plugin-typescript": "^1.0.0",
-    "svelte": "^3.0.0-beta.8",
-    "ts-jest": "^24.0.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "svelte": "^3.0.0",
+    "ts-jest": "^24.0.2",
     "tslib": "^1.9.3",
-    "typescript": "^3.3",
-    "zen-observable": "^0.8.13"
+    "typescript": "^3.4.5",
+    "zen-observable": "^0.8.14"
   },
   "jest": {
     "testEnvironment": "node",
