@@ -20,7 +20,7 @@ export default function flat<T>(
 ): ReadableStore<Deferred<T>> {
   const is_observable = isObservable(subscribable);
 
-  return readable(set => {
+  return readable((undefined as unknown) as Deferred<T>, set => {
     let inner_unsubscribe: Unsubscribe | null = null;
     let outer_unsubscribe: Unsubscribe | null = null;
 

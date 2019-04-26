@@ -19,7 +19,7 @@
     "preexample": "npm run build",
     "example": "cd example && rollup -c",
     "test": "jest",
-    "check": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "svelte": "^3.0.0"
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.4.3",
     "@types/jest": "^24.0.11",
+    "@types/zen-observable": "^0.8.0",
     "jest": "^24.7.1",
     "rollup": "^1.10.1",
     "rollup-plugin-commonjs": "^9.3.4",

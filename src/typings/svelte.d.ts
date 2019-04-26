@@ -7,7 +7,7 @@ declare module 'svelte/store' {
   }
 
   export function readable<T>(
-    start: (set: (value: T) => void) => Unsubscribe | void,
-    initial?: T
+    initial: T,
+    start: (set: (value: T) => void) => Unsubscribe | void
   ): ReadableStore<T>;
 }

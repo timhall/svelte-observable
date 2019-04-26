@@ -9,10 +9,10 @@ export default function observe<T>(
   initial?: T
 ): ReadableStore<Deferred<T>> {
   if (!isObservable(observable)) {
-    return readable(noop, observable as T);
+    return readable(observable as T, noop);
   }
 
-  return readable(set => {
+  return readable((undefined as unknown) as Deferred<T>, set => {
     const { fulfill, reject } = deferred<T>(set, initial);
 
     const subscription = (observable as Observable<T>).subscribe({
