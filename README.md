@@ -60,7 +60,7 @@ Flatten a store/observable of stores/observables, unsubscribing from the previou
 
 ```html
 <script>
-  import { writable, derive } from 'svelte/store';
+  import { writable, derived } from 'svelte/store';
   import { flat } from 'svelte-observable';
   import { query } from './api';
 
@@ -68,7 +68,7 @@ Flatten a store/observable of stores/observables, unsubscribing from the previou
 
   // query returns an Observable of results
   // -> need to unsubscribe from previous results on search change
-  const store_of_observables = derive(search, $search => query($search));
+  const store_of_observables = derived(search, $search => query($search));
   //    ^ Readable<Observable<Result>>
 
   const results = flat(store_of_observables);

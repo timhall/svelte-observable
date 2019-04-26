@@ -27,11 +27,11 @@
 
 <script>
   import { observe, flat } from '../../';
-  import { writable, derive } from 'svelte/store';
+  import { writable, derived } from 'svelte/store';
   import { list, search } from './api';
 
   const values = observe(list());
 
   const query = writable('');
-  const results = flat(derive(query, $query => search($query)));
+  const results = flat(derived(query, $query => search($query)));
 </script>

@@ -17,7 +17,7 @@
     "build": "rollup -c",
     "prepublishOnly": "npm run build",
     "preexample": "npm run build",
-    "example": "cd example && rollup -c",
+    "example": "cd example && rollup -c && sirv public --dev",
     "test": "jest",
     "typecheck": "tsc --noEmit"
   },
@@ -36,6 +36,7 @@
     "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-typescript": "^1.0.1",
+    "sirv-cli": "^0.4.0",
     "svelte": "^3.0.0",
     "ts-jest": "^24.0.2",
     "tslib": "^1.9.3",
